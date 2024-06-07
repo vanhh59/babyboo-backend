@@ -24,8 +24,7 @@ const findUserById = async (userId) => {
     return await User.findById(userId);
 }; // Tìm user theo id
 
-
-export {
+const userRepository = {
     findUserByEmail,
     createUser,
     updateUser,
@@ -33,3 +32,5 @@ export {
     getAllUsers,
     findUserById,
 };
+
+export default userRepository;

@@ -1,15 +1,17 @@
-import * as userRepo from "../repository/userRepo.js";
-import * as bcrypt from "bcryptjs";
-import * as createToken from "../utils/createToken.js";
+import bcrypt from "bcryptjs";
+import createToken from "../utils/createToken.js";
+import userRepository from "../repositories/userRepository.js";
+import User from "../models/userModel.js";
 
 const registerUser = async () => {
 
+    // Tạo mới user
     if (!username || !email || !password) {
         res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin" });
         return;
     }
     // Kiểm tra xem email đã tồn tại trong hệ thống chưa
-    const existingUser = await userRepo.findUserByEmail(userData.email);
+    const existingUser = await userRepository.findUserByEmail(userData.email);
     if (existingUser) res.status(400).json({ message: "Email đã tồn tại" });
 
     // Mã hóa mật khẩu
@@ -40,6 +42,10 @@ const registerUser = async () => {
 
 };
 
+const createUser = async (userData) => {
+};
+
+
 const updateUserProfile = async (userId, userData) => {
     // Cập nhật thông tin user
     const updatedUser = await userRepo.updateUser(userId, userData);
@@ -63,10 +69,14 @@ const getUserById = async (userId) => {
     return user;
 };
 
-export {
+const userServices = {
     registerUser,
+    createUser,
     updateUserProfile,
     deleteUserAccount,
     getAllUsers,
     getUserById,
 };
+
+export default userServices;
+
