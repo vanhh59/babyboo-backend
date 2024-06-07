@@ -1,5 +1,5 @@
 {
-  "name": "MERN e-commerce",
+  "name": "babyboo-backend",
   "version": "1.0.0",
   "description": "MERN Stack E-Commerce Project",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "dev": "concurrently \"npm run frontend\" \"npm run backend"
   },
   "keywords": [],
-  "author": "HuXn WebDev",
+  "author": "ivan",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
