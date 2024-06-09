@@ -1,4 +1,5 @@
-import User from "../models/userModel.js";
+// import User from "../models/userModel.js";
+const User = require('../models/userModel');
 
 const findUserByEmail = async (email) => {
     return await User.findOne({ email });
@@ -33,4 +34,5 @@ const userRepository = {
     findUserById,
 };
 
-export default userRepository;
+// export default userRepository;
+module.exports = userRepository;

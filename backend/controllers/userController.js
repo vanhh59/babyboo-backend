@@ -1,16 +1,17 @@
-import asyncHandler from "../middlewares/asyncHandler.js";
-import userServices from "../services/userService.js";
-import User from "../models/userModel.js";
-import bcrypt from "bcryptjs";
-import createToken from "../utils/createToken.js";
+const asyncHandler = require('../middlewares/asyncHandler');
+const userServices = require('../services/userService');
+const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
+const createToken = require('../utils/createToken');
 
-const registerUser = asyncHandler(async (req, res) => {
+class userController {
+  registerUser = asyncHandler(async (req, res) => {
   const userData = req.body;
   const newUser = await userServices.registerUser(userData);
   res.status(201).json(newUser);
 });
 
-const createUser = asyncHandler(async (req, res) => {
+createUser = asyncHandler(async (req, res) => {
   try {
     const userData = req.body;
     const newUser = await userServices.registerUser(userData);
@@ -21,7 +22,7 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-const loginUser = asyncHandler(async (req, res) => {
+loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   console.log(email);
@@ -49,7 +50,7 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-const logoutCurrentUser = asyncHandler(async (req, res) => {
+logoutCurrentUser = asyncHandler(async (req, res) => {
   res.cookie("jwt", "", {
     httyOnly: true,
     expires: new Date(0),
@@ -58,12 +59,12 @@ const logoutCurrentUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-const getAllUsers = asyncHandler(async (req, res) => {
+getAllUsers = asyncHandler(async (req, res) => {
   const users = await User.find({});
   res.json(users);
 });
 
-const getCurrentUserProfile = asyncHandler(async (req, res) => {
+getCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -78,7 +79,7 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-const updateCurrentUserProfile = asyncHandler(async (req, res) => {
+updateCurrentUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -105,7 +106,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-const deleteUserById = asyncHandler(async (req, res) => {
+deleteUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -122,7 +123,7 @@ const deleteUserById = asyncHandler(async (req, res) => {
   }
 });
 
-const getUserById = asyncHandler(async (req, res) => {
+getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id).select("-password");
 
   if (user) {
@@ -133,7 +134,7 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-const updateUserById = asyncHandler(async (req, res) => {
+updateUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -154,16 +155,5 @@ const updateUserById = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
-export {
-  registerUser,
-  createUser,
-  loginUser,
-  logoutCurrentUser,
-  getAllUsers,
-  getCurrentUserProfile,
-  updateCurrentUserProfile,
-  deleteUserById,
-  getUserById,
-  updateUserById,
-};
+}
+module.exports = new userController;

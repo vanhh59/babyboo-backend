@@ -1,7 +1,11 @@
-import bcrypt from "bcryptjs";
-import createToken from "../utils/createToken.js";
-import userRepository from "../repositories/userRepository.js";
-import User from "../models/userModel.js";
+// import bcrypt from "bcryptjs";
+// import createToken from "../utils/createToken.js";
+// import userRepository from "../repositories/userRepository.js";
+// import User from "../models/userModel.js";
+const userRepository = require('../repositories/userRepository');
+const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
+const createToken = require('../utils/createToken');
 
 const registerUser = async () => {
 
@@ -78,5 +82,6 @@ const userServices = {
     getUserById,
 };
 
-export default userServices;
+// export default userServices;
+module.exports = userServices;
 
