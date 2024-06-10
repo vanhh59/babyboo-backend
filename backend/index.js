@@ -7,7 +7,7 @@ var express = require("express");
 var path = require('path');
 var dotenv = require("dotenv");
 var cookieParser = require("cookie-parser");
-
+var cors = require("cors");
 // Utiles
 // import connectDB from "./config/db.js";
 // import userRoutes from "./routes/userRoutes.js";
@@ -29,7 +29,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(cors());
+  
 app.use("/api/users", userRoutes);
 // app.use("/api/category", categoryRoutes);
 app.use("/api/products", productRoutes);
