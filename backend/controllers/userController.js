@@ -3,6 +3,7 @@ import userServices from "../services/userService.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
+import bodyParser from "body-parser";
 
 const registerUser = asyncHandler(async (req, res) => {
   const userData = req.body;
