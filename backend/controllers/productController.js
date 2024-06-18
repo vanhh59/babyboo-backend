@@ -1,26 +1,27 @@
 const productService = require('../services/productService');
 const bodyParser = require('body-parser');
+const asyncHandler = require('../middlewares/asyncHandler');
 
-class productController {  
-      async getAllProduct(req, res) {
-        try {
-          const products = await productService.getAllService();
-          res.status(200).json(products);
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: 'Error fetching product data' });
-        }
-      }
-    
-      async addNewProduct(req, res) {
-        try {
-          const newproduct = await productService.addproduct(req.body);
-          res.status(201).json(newproduct);
-        } catch (error) {
-          console.error(error);
-          res.status(400).json({ message: 'Error adding product' });
-        }
-      }
+class productController {
+  async getAllProduct(req, res) {
+    try {
+      const products = await productService.getAllService();
+      res.status(200).json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching product data' });
+    }
+  }
+
+  async addNewProduct(req, res) {
+    try {
+      const newproduct = await productService.addproduct(req.body);
+      res.status(201).json(newproduct);
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({ message: 'Error adding product' });
+    }
+  }
 }
 
 module.exports = new productController;

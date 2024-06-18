@@ -1,6 +1,3 @@
-// import jwt from "jsonwebtoken";
-// import User from "../models/userModel.js";
-// import asyncHandler from "./asyncHandler.js";
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const asyncHandler = require('./asyncHandler');
@@ -33,8 +30,6 @@ const authorizeAdmin = (req, res, next) => {
     res.status(401).send("Not authorized as an admin.");
   }
 };
-
-// export { authenticate, authorizeAdmin };
 
 module.exports = {
   authenticate,

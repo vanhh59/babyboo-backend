@@ -49,6 +49,32 @@ const registerUser = async () => {
 const createUser = async (userData) => {
 };
 
+const loginUser = async (userData) => {
+    // Đăng nhập
+    const { email, password } = userData;
+
+    const existingUser = await userRepository.findUserByEmail(email);
+
+    if (existingUser) {
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+
+        if (isPasswordValid) {
+            createToken(res, existingUser._id);
+
+            res.status(200).json({
+                _id: existingUser._id,
+                username: existingUser.username,
+                email: existingUser.email,
+                isAdmin: existingUser.isAdmin,
+            });
+        } else {
+            res.status(400).json({ message: "Mật khẩu không chính xác" });
+        }
+    } else {
+        res.status(404).json({ message: "Email không tồn tại" });
+    }
+};
+
 
 const updateUserProfile = async (userId, userData) => {
     // Cập nhật thông tin user
@@ -76,6 +102,7 @@ const getUserById = async (userId) => {
 const userServices = {
     registerUser,
     createUser,
+    loginUser,
     updateUserProfile,
     deleteUserAccount,
     getAllUsers,

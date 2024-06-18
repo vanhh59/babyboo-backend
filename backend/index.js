@@ -3,11 +3,13 @@
 // import express from "express";
 // import dotenv from "dotenv";
 // import cookieParser from "cookie-parser";
-var express = require("express");
-var path = require('path');
-var dotenv = require("dotenv");
-var cookieParser = require("cookie-parser");
+const express = require("express");
+const path = require('path');
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 // Utiles
 // import connectDB from "./config/db.js";
 // import userRoutes from "./routes/userRoutes.js";
@@ -29,6 +31,33 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'E-commerce API with Swagger',
+      version: '1.0.0',
+    },
+    servers: [{ url: 'http://localhost:10000/' }],
+  },
+  apis: ['./index.js'], // files containing annotations as above
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ *  @swagger
+ * /:
+ *  get:
+ *    summary: Check if get method is working
+ *    description: Check if get method is working
+ *    responses: 
+ *        200:
+ *            description: to test if get method is working
+ * 
+ */
 
 app.use("/api/users", userRoutes);
 // app.use("/api/category", categoryRoutes);

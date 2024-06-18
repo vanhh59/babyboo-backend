@@ -13,10 +13,26 @@ const express = require("express");
 //   updateUserById,
 // } from "../controllers/userController.js";
 const userController = require('../controllers/userController');
+
 // import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 const auth = require('../middlewares/authMiddleware');
 
 const router = express.Router();
+
+/**
+ *  @swagger
+ * /:
+ * get:
+ *    summary: Check if get method is working
+ *    description: Check if get method is working
+ *    responses: 
+ *        200:
+ *            description: to test if get method is working
+ * 
+ */
+router.get("/", (req, res) => {
+  res.send("API is running...");
+});
 
 router.post("/register", userController.registerUser);
 
@@ -28,17 +44,17 @@ router
 router.post("/auth", userController.loginUser);
 router.post("/logout", userController.logoutCurrentUser);
 
-// router
-//   .route("/profile")
-//   .get(authenticate, getCurrentUserProfile)
-//   .put(authenticate, updateCurrentUserProfile);
+router
+  .route("/profile")
+  .get(auth.authenticate, userController.getCurrentUserProfile)
+  .put(auth.authenticate, userController.updateCurrentUserProfile);
 
-// // ADMIN ROUTES 👇
-// router
-//   .route("/:id")
-//   .delete(authenticate, authorizeAdmin, deleteUserById)
-//   .get(authenticate, authorizeAdmin, getUserById)
-//   .put(authenticate, authorizeAdmin, updateUserById);
+// ADMIN ROUTES 👇
+router
+  .route("/:id")
+  .delete(auth.authenticate, auth.authorizeAdmin, userController.deleteUserById)
+  // import mongoose from "mongoose";
+  .get(auth.authenticate, auth.authorizeAdmin, userController.getUserById)
+  .put(auth.authenticate, auth.authorizeAdmin, userController.updateUserById);
 
-// export default router;
 module.exports = router;

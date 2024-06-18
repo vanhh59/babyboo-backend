@@ -1,10 +1,9 @@
 // import express from "express";
 // import formidable from "express-formidable";
 const express = require("express");
-const formidable = require("express-formidable");
-
+//const formidable = require("express-formidable");
 const router = express.Router();
-
+const auth = require("../middlewares/authMiddleware");
 // controllers
 // import {
 //   addProduct,
@@ -21,14 +20,13 @@ const router = express.Router();
 // import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 // import checkId from "../middlewares/checkId.js";
 // import productController from "../controllers/productController.js";
-const auth = require("../middlewares/authMiddleware");
 const checkId = require("../middlewares/checkId");
 const productController = require("../controllers/productController");
 
 router
   .route("/")
-  // .get(fetchProducts)
-  // .post(authenticate, authorizeAdmin, formidable(), addProduct);
+  //.get(fetchProducts)
+  .post(auth.authenticate, auth.authorizeAdmin, productController.addNewProduct)
   .get(productController.getAllProduct)
   .post(productController.addNewProduct)
 
