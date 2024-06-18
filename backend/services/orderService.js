@@ -11,7 +11,7 @@ function calcPrices(orderItems) {
     const taxRate = 0.15;
     const taxPrice = (itemsPrice * taxRate).toFixed(2);
   
-    const totalPrice = (
+    var totalPrice = (
       itemsPrice +
       shippingPrice +
       parseFloat(taxPrice)
