@@ -18,7 +18,8 @@ const auth = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-router.post("/register", userController.registerUser);
+router
+  .post("/register", userController.registerUser);
 
 router
   .route("/")

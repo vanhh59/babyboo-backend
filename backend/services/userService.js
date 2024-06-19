@@ -11,13 +11,13 @@ const registerUser = async () => {
 
     // Tạo mới user
     if (!username || !email || !password) {
-        res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin" });
-        return;
+        throw new Error("Vui lòng nhập đầy đủ thông tin");
     }
     // Kiểm tra xem email đã tồn tại trong hệ thống chưa
     const existingUser = await userRepository.findUserByEmail(userData.email);
-    if (existingUser) res.status(400).json({ message: "Email đã tồn tại" });
-
+    if (existingUser) {
+        res.status(400).send("User already exists") && console.log("User already exists");
+    }
     // Mã hóa mật khẩu
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(userData.password, salt);
@@ -36,10 +36,12 @@ const registerUser = async () => {
             username: userData.username,
             email: userData.email,
             isAdmin: userData.isAdmin,
+            isStaff: userData.isStaff,
+            isManager: userData.isManager,
         });
     } catch (error) {
         res.status(400).json({ message: error.message });
-        throw new Error("Không thể tạo tài khoản");
+        throw new Error("Invalid user data");
     }
 
     // Tạo mới user
