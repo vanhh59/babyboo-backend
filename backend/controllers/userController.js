@@ -10,16 +10,48 @@ const registerUser = asyncHandler(async (req, res) => {
   res.status(201).json(newUser);
 });
 
+// const createUser = asyncHandler(async (req, res) => {
+//   try {
+//     const userData = req.body;
+//     const newUser = await userServices.registerUser(userData);
+//     res.status(201).json(newUser);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//     throw new Error("Không thể tạo tài khoản");
+//   }
+// });
 const createUser = asyncHandler(async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    throw new Error("Please fill all the inputs.");
+  }
+
+  const userExists = await User.findOne({ email });
+  if (userExists) res.status(400).send("User already exists");
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const newUser = new User({ username, email, password: hashedPassword });
+
   try {
-    const userData = req.body;
-    const newUser = await userServices.registerUser(userData);
-    res.status(201).json(newUser);
+    await newUser.save();
+    createToken(res, newUser._id);
+
+    res.status(201).json({
+      _id: newUser._id,
+      username: newUser.username,
+      email: newUser.email,
+      isAdmin: newUser.isAdmin,
+      isStaff: newUser.isStaff,
+      isManager: newUser.isManager,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
-    throw new Error("Không thể tạo tài khoản");
+    res.status(400);
+    throw new Error("Invalid user data");
   }
 });
+
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
