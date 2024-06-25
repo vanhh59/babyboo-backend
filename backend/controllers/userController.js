@@ -5,9 +5,14 @@ import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const userData = req.body;
-  const newUser = await userServices.registerUser(userData);
-  res.status(201).json(newUser);
+  try {
+    const { username, email, password } = req.body;
+    const newUser = await userServices.registerUser(username, email, password, res);
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
 // const createUser = asyncHandler(async (req, res) => {

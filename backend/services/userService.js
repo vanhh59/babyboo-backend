@@ -1,45 +1,35 @@
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 import userRepository from "../repositories/userRepository.js";
-import User from "../models/userModel.js";
 
-const registerUser = async () => {
-
-    // Tạo mới user
+const registerUser = async (username, email, password, res) => {
     if (!username || !email || !password) {
-        res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin" });
-        return;
+        throw new Error("Please fill all the inputs.");
     }
-    // Kiểm tra xem email đã tồn tại trong hệ thống chưa
-    const existingUser = await userRepository.findUserByEmail(userData.email);
-    if (existingUser) res.status(400).json({ message: "Email đã tồn tại" });
 
-    // Mã hóa mật khẩu
+    const userExists = await userRepository.findUserByEmail(email);
+    if (userExists)
+        throw new Error("User already exists");
+
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
-    const userData = new User({
-        username: userData.username,
-        email: userData.email,
-        password: hashedPassword,
-    });
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const newUser = await userRepository.createUser({ username, email, password: hashedPassword });
 
     try {
-        await userData.save();
-        createToken(res, userData._id);
+        await newUser.save();
+        const token = createToken(res, newUser._id);
 
-        res.status(201).json({
-            _id: userData._id,
-            username: userData.username,
-            email: userData.email,
-            isAdmin: userData.isAdmin,
-        });
+        return {
+            _id: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            isAdmin: newUser.isAdmin,
+            isStaff: newUser.isStaff,
+            isManager: newUser.isManager,
+        };
     } catch (error) {
-        res.status(400).json({ message: error.message });
-        throw new Error("Không thể tạo tài khoản");
+        throw new Error("Invalid user data");
     }
-
-    // Tạo mới user
-
 };
 
 const createUser = async (userData) => {

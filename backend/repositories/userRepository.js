@@ -5,6 +5,7 @@ const findUserByEmail = async (email) => {
 }; // Tìm user theo email
 
 const createUser = async (userData) => {
+    const newUser = new User(userData);
     return await User.create(userData);
 }; // Tạo mới user
 
