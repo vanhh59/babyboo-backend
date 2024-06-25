@@ -16,7 +16,7 @@ const registerUser = async (username, email, password, res) => {
     const newUser = await userRepository.createUser({ username, email, password: hashedPassword });
 
     try {
-        await newUser.save();
+        const savedUser = await userRepository.saveUser(newUser);
         const token = createToken(res, newUser._id);
 
         return {

@@ -9,6 +9,14 @@ const createUser = async (userData) => {
     return await User.create(userData);
 }; // Tạo mới user
 
+const saveUser = async (newUser) => {
+    try {
+        return await newUser.save();
+    } catch (error) {
+        throw new Error("Error saving user data");
+    }
+}; // Lưu thông tin user
+
 const updateUser = async (userId, userData) => {
     return await User.findByIdAndUpdate(userId, userData, { new: true });
 }; // Cập nhật thông tin user
@@ -27,6 +35,7 @@ const findUserById = async (userId) => {
 
 const userRepository = {
     findUserByEmail,
+    saveUser,
     createUser,
     updateUser,
     deleteUser,
