@@ -81,11 +81,11 @@ const fetchProducts = asyncHandler(async (req, res) => {
 
     const keyword = req.query.keyword
       ? {
-          name: {
-            $regex: req.query.keyword,
-            $options: "i",
-          },
-        }
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
       : {};
 
     const count = await Product.countDocuments({ ...keyword });
@@ -101,7 +101,7 @@ const fetchProducts = asyncHandler(async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Server Error" });
   }
-});
+});  // hàm này trả về một danh sách sản phẩm dựa trên từ khóa tìm kiếm và số lượng sản phẩm trên mỗi trang
 
 const fetchProductById = asyncHandler(async (req, res) => {
   try {

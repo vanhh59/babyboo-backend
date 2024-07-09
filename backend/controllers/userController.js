@@ -108,6 +108,9 @@ const getCurrentUserProfile = asyncHandler(async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      isAdmin: user.isAdmin,
+      isStaff: user.isStaff,
+      isManager: user.isManager,
     });
   } else {
     res.status(404);
@@ -135,6 +138,8 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       username: updatedUser.username,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      isStaff: updatedUser.isStaff,
+      isManager: updatedUser.isManager,
     });
   } else {
     res.status(404);
