@@ -80,9 +80,16 @@ const loginUser = asyncHandler(async (req, res) => {
         username: existingUser.username,
         email: existingUser.email,
         isAdmin: existingUser.isAdmin,
+        isStaff: existingUser.isStaff,
+        isManager: existingUser.isManager,
       });
       return;
+    } else {
+      res.status(401).send("Invalid email or password");
+      return;
     }
+  } else {
+    res.status(401).send("User not found !");
   }
 });
 
