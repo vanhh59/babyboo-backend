@@ -32,40 +32,68 @@ const registerUser = async (username, email, password, res) => {
     }
 };
 
-const createUser = async (userData) => {
+const loginUser = async (email, password, res) => {
+    const existingUser = await userRepository.findUserByEmail(email);
+
+    if (existingUser) {
+        const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+
+        if (isPasswordValid) {
+            createToken(res, existingUser._id);
+
+            return {
+                _id: existingUser._id,
+                username: existingUser.username,
+                email: existingUser.email,
+                isAdmin: existingUser.isAdmin,
+                isStaff: existingUser.isStaff,
+                isManager: existingUser.isManager,
+            };
+        } else {
+            throw new Error("Invalid password");
+        }
+    } else {
+        throw new Error("User not found !");
+    }
 };
 
+const logoutCurrentUser = async (res) => {
+    res.cookie("jwt", "", {
+        httyOnly: true,
+        expires: new Date(0),
+    });
 
-const updateUserProfile = async (userId, userData) => {
-    // Cập nhật thông tin user
-    const updatedUser = await userRepo.updateUser(userId, userData);
-    return updatedUser;
-};
-
-const deleteUserAccount = async (userId) => {
-    // Xóa user
-    await userRepo.deleteUser(userId);
+    return "Logged out successfully";
 };
 
 const getAllUsers = async () => {
-    // Lấy danh sách tất cả user
-    const users = await userRepo.getAllUsers();
+    const users = await userRepository.getAllUsers();
     return users;
 };
 
-const getUserById = async (userId) => {
-    // Lấy thông tin user theo id
-    const user = await userRepo.findUserById(userId);
-    return user;
+const getCurrentUserProfile = async (req) => {
+    const user = await userRepository.findUserById(req.user._id);
+
+    if (user) {
+        return {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            isStaff: user.isStaff,
+            isManager: user.isManager,
+        };
+    } else {
+        throw new Error("User not found.");
+    }
 };
 
 const userServices = {
     registerUser,
-    createUser,
-    updateUserProfile,
-    deleteUserAccount,
+    loginUser,
+    logoutCurrentUser,
     getAllUsers,
-    getUserById,
+    getCurrentUserProfile,
 };
 
 export default userServices;
