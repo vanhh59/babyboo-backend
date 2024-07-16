@@ -31,4 +31,20 @@ const authorizeAdmin = (req, res, next) => {
   }
 };
 
-export { authenticate, authorizeAdmin };
+const authorizeStaff = (req, res, next) => {
+  if (req.user && req.user.isStaff) {
+    next();
+  } else {
+    res.status(401).send("Not authorized as an staff.");
+  }
+};
+
+const authorizeManager = (req, res, next) => {
+  if (req.user && req.user.isManager) {
+    next();
+  } else {
+    res.status(401).send("Not authorized as an manager.");
+  }
+};
+
+export { authenticate, authorizeAdmin, authorizeStaff, authorizeManager };
