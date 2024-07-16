@@ -1,13 +1,14 @@
-const asyncHandler = require('../middlewares/asyncHandler');
-const userServices = require('../services/userService');
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const createToken = require('../utils/createToken');
+import asyncHandler from "../middlewares/asyncHandler.js";
+import userServices from "../services/userService.js";
+import User from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+import createToken from "../utils/createToken.js";
 
-class userController {
-  registerUser = asyncHandler(async (req, res) => {
-    const userData = req.body;
-    const newUser = await userServices.registerUser(userData);
+const registerUser = asyncHandler(async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const newUser = await userServices.registerUser(username, email, password, res);
+
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).send(error.message);

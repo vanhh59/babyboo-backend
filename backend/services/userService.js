@@ -1,15 +1,8 @@
-// import bcrypt from "bcryptjs";
-// import createToken from "../utils/createToken.js";
-// import userRepository from "../repositories/userRepository.js";
-// import User from "../models/userModel.js";
-const userRepository = require('../repositories/userRepository');
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const createToken = require('../utils/createToken');
+import bcrypt from "bcryptjs";
+import createToken from "../utils/createToken.js";
+import userRepository from "../repositories/userRepository.js";
 
-const registerUser = async () => {
-
-    // Tạo mới user
+const registerUser = async (username, email, password, res) => {
     if (!username || !email || !password) {
         throw new Error("Please fill all the inputs.");
     }
