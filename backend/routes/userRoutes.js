@@ -1,45 +1,41 @@
-// import express from "express";
-const express = require("express");
-// import {
-//   registerUser,
-//   createUser,
-//   loginUser,
-//   logoutCurrentUser,
-//   getAllUsers,
-//   getCurrentUserProfile,
-//   updateCurrentUserProfile,
-//   deleteUserById,
-//   getUserById,
-//   updateUserById,
-// } from "../controllers/userController.js";
-const userController = require('../controllers/userController');
-// import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
-const auth = require('../middlewares/authMiddleware');
+import express from "express";
+import {
+  registerUser,
+  createUser,
+  loginUser,
+  logoutCurrentUser,
+  getAllUsers,
+  getCurrentUserProfile,
+  updateCurrentUserProfile,
+  deleteUserById,
+  getUserById,
+  updateUserById,
+} from "../controllers/userController.js";
+
+import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router
-  .post("/register", userController.registerUser);
+router.post("/register", registerUser);
 
 router
   .route("/")
-  .post(userController.createUser)
-  .get(auth.authenticate, auth.authorizeAdmin, userController.getAllUsers);
+  .post(createUser)
+  .get(authenticate, authorizeAdmin, getAllUsers);
 
-router.post("/auth", userController.loginUser);
-router.post("/logout", userController.logoutCurrentUser);
+router.post("/auth", loginUser);
+router.post("/logout", logoutCurrentUser);
 
-// router
-//   .route("/profile")
-//   .get(authenticate, getCurrentUserProfile)
-//   .put(authenticate, updateCurrentUserProfile);
+router
+  .route("/profile")
+  .get(authenticate, getCurrentUserProfile)
+  .put(authenticate, updateCurrentUserProfile);
 
-// // ADMIN ROUTES 👇
-// router
-//   .route("/:id")
-//   .delete(authenticate, authorizeAdmin, deleteUserById)
-//   .get(authenticate, authorizeAdmin, getUserById)
-//   .put(authenticate, authorizeAdmin, updateUserById);
+// ADMIN ROUTES 👇
+router
+  .route("/:id")
+  .delete(authenticate, authorizeAdmin, deleteUserById)
+  .get(authenticate, authorizeAdmin, getUserById)
+  .put(authenticate, authorizeAdmin, updateUserById);
 
-// export default router;
-module.exports = router;
+export default router;

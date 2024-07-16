@@ -1,9 +1,6 @@
-// import jwt from "jsonwebtoken";
-// import User from "../models/userModel.js";
-// import asyncHandler from "./asyncHandler.js";
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const asyncHandler = require('./asyncHandler');
+import jwt from "jsonwebtoken";
+import User from "../models/userModel.js";
+import asyncHandler from "./asyncHandler.js";
 
 const authenticate = asyncHandler(async (req, res, next) => {
   let token;
@@ -34,9 +31,4 @@ const authorizeAdmin = (req, res, next) => {
   }
 };
 
-// export { authenticate, authorizeAdmin };
-
-module.exports = {
-  authenticate,
-  authorizeAdmin
-};
+export { authenticate, authorizeAdmin };

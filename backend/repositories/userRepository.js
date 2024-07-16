@@ -1,13 +1,21 @@
-// import User from "../models/userModel.js";
-const User = require('../models/userModel');
+import User from "../models/userModel.js";
 
 const findUserByEmail = async (email) => {
     return await User.findOne({ email });
 }; // Tìm user theo email
 
 const createUser = async (userData) => {
+    const newUser = new User(userData);
     return await User.create(userData);
 }; // Tạo mới user
+
+const saveUser = async (newUser) => {
+    try {
+        return await newUser.save();
+    } catch (error) {
+        throw new Error("Error saving user data");
+    }
+}; // Lưu thông tin user
 
 const updateUser = async (userId, userData) => {
     return await User.findByIdAndUpdate(userId, userData, { new: true });
@@ -27,6 +35,7 @@ const findUserById = async (userId) => {
 
 const userRepository = {
     findUserByEmail,
+    saveUser,
     createUser,
     updateUser,
     deleteUser,
@@ -34,5 +43,4 @@ const userRepository = {
     findUserById,
 };
 
-// export default userRepository;
-module.exports = userRepository;
+export default userRepository;
