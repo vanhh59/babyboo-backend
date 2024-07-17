@@ -15,13 +15,13 @@ import {
   fetchNewProducts,
   filterProducts,
 } from "../controllers/productController.js";
-import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
+import { authenticate, authorizeAdmin, authorizeStaff, authorizeManager } from "../middlewares/authMiddleware.js";
 import checkId from "../middlewares/checkId.js";
 
 router
   .route("/")
   .get(fetchProducts)
-  .post(authenticate, authorizeAdmin,  addProduct);
+  .post(authenticate, authorizeAdmin, formidable(), addProduct);
 
 router.route("/allproducts").get(fetchAllProducts);
 router.route("/:id/reviews").post(authenticate, checkId, addProductReview);

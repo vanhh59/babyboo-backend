@@ -2,7 +2,6 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 import userServices from "../services/userService.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
-// import createToken from "../utils/createToken.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   try {
