@@ -47,4 +47,12 @@ const authorizeManager = (req, res, next) => {
   }
 };
 
-export { authenticate, authorizeAdmin, authorizeStaff, authorizeManager };
+const authorizeForManage = (req, res, next) => {
+  if (req.user && (req.user.isManager || req.user.isStaff || req.user.isAdmin)) {
+    next();
+  } else {
+    res.status(403).send("Access denied. Only manager or staff can perform this action.");
+  }
+}
+
+export { authenticate, authorizeAdmin, authorizeStaff, authorizeManager, authorizeForManage };
