@@ -25,7 +25,7 @@ router.post("/register", registerUser);
 router.post("/auth", loginUser);
 router.post("/logout", logoutCurrentUser);
 
-router.get("/", authenticate, authorizeAdmin, getAllUsers);
+router.get("/", authenticate, getAllUsers);
 
 router
   .route("/profile")
