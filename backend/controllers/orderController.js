@@ -6,9 +6,9 @@ function calcPrices(orderItems) {
   const itemsPrice = orderItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
-  );
+  ); // reduce method to calculate total price of all items
 
-  const shippingPrice = itemsPrice > 100 ? 0 : 10;
+  const shippingPrice = itemsPrice > 100 ? 0 : 10; // 
   const taxRate = 0.15;
   const taxPrice = (itemsPrice * taxRate).toFixed(2);
 
@@ -103,7 +103,7 @@ const countTotalOrders = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; // countDocuments method to count total orders
 
 const calculateTotalSales = async (req, res) => {
   try {
@@ -113,7 +113,7 @@ const calculateTotalSales = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; // reduce method to calculate total sales
 
 const calcualteTotalSalesByDate = async (req, res) => {
   try {
@@ -137,7 +137,7 @@ const calcualteTotalSalesByDate = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; // aggregate method to group orders by date and calculate total sales
 
 const findOrderById = async (req, res) => {
   try {
@@ -145,6 +145,7 @@ const findOrderById = async (req, res) => {
       "user",
       "username email"
     );
+    // populate user field with username and email 
 
     if (order) {
       res.json(order);
